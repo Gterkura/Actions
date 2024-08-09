@@ -26,7 +26,6 @@ void UMoveComponent::BeginPlay()
 	
 }
 
-
 // Called every frame
 void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -34,17 +33,7 @@ void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 	// ...
 
-
-	FVector TargetLocation = ShouldTheComponentMove? DefaultLocation + DistanceToMove : DefaultLocation;
-
-	AActor* Owner = GetOwner();
-	if (!Owner) return;
-	FVector CurrentLocation = GetOwner()->GetActorLocation();
-
-	Speed = DistanceToMove.Length() / Time;
-
-	Owner->SetActorLocation(FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, Speed));
-	
+	Move(DeltaTime);		
 }
 
 void UMoveComponent::ShouldItMove(bool ShouldMove) {
@@ -53,4 +42,15 @@ void UMoveComponent::ShouldItMove(bool ShouldMove) {
 
 }
 
+void UMoveComponent::Move(float DeltaTime) {
+	FVector TargetLocation = ShouldTheComponentMove ? DefaultLocation + DistanceToMove : DefaultLocation;
+
+	AActor* Owner = GetOwner();
+	if (!Owner) return;
+	FVector CurrentLocation = GetOwner()->GetActorLocation();
+
+	Speed = DistanceToMove.Length() / Time;
+
+	Owner->SetActorLocation(FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, Speed));
+}
 

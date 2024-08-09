@@ -4,6 +4,7 @@
 #include "TriggerBoxComponent.h"
 #include "Engine/World.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "MoverInterface.h"
 
 // Sets default values for this component's properties
 UTriggerBoxComponent::UTriggerBoxComponent()
@@ -28,12 +29,17 @@ void UTriggerBoxComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	if (!MoverComponent || DoorTag.IsNone()) // Check if MoverComponent or DoorTag is not valid
+	{
+		return; // Exit early if these are not properly initialized
+	}
+
 		TArray < AActor* >OverlappingActors;
 
 		GetOverlappingActors(OverlappingActors);
 
 		for (AActor* Actor : OverlappingActors) {
-			if (Actor->ActorHasTag(DoorTag) && !Actor->ActorHasTag("Held"))
+			if (Actor && Actor->ActorHasTag(DoorTag) && !Actor->ActorHasTag("Held"))
 			{
 				UPrimitiveComponent* ActorRoot = Cast<UPrimitiveComponent>(Actor->GetRootComponent());
 				if (ActorRoot) {
@@ -42,8 +48,7 @@ void UTriggerBoxComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 				Actor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 				//Actor->Destroy();
 				MoverComponent->ShouldItMove(true);
-				//QuitGame();
-				
+				//QuitGame();	
 			}
 			else
 			{
@@ -52,7 +57,7 @@ void UTriggerBoxComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 		}	
 }
 
-void UTriggerBoxComponent::SetTheMover(UMoveComponent* Mover) {
+void UTriggerBoxComponent::SetTheMover(TScriptInterface<IMoverInterface> Mover) {
 
 	MoverComponent = Mover;
 }

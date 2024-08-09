@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
-#include "MoveComponent.h"
+//#include "MoveComponent.h"
 #include "TriggerBoxComponent.generated.h"
+
+//class IMoverInterface;
 
 /**
  * 
@@ -23,7 +25,7 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable)
-	void SetTheMover(UMoveComponent* Mover);
+	void SetTheMover(TScriptInterface<IMoverInterface> Mover);
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -31,7 +33,7 @@ private:
 
 	AActor* GetActorThatHasTag()const;
 
-	UMoveComponent* MoverComponent;
+	TScriptInterface<IMoverInterface> MoverComponent;
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Game")
