@@ -4,6 +4,7 @@
 #include "TriggerBoxComponent.h"
 #include "Engine/World.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "MoverInterface.h"
 
 // Sets default values for this component's properties
 UTriggerBoxComponent::UTriggerBoxComponent()
@@ -42,8 +43,7 @@ void UTriggerBoxComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 				Actor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 				//Actor->Destroy();
 				MoverComponent->ShouldItMove(true);
-				//QuitGame();
-				
+				//QuitGame();	
 			}
 			else
 			{
@@ -52,7 +52,7 @@ void UTriggerBoxComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 		}	
 }
 
-void UTriggerBoxComponent::SetTheMover(UMoveComponent* Mover) {
+void UTriggerBoxComponent::SetTheMover(TScriptInterface<IMoverInterface> Mover) {
 
 	MoverComponent = Mover;
 }
