@@ -7,7 +7,7 @@
 //#include "MoveComponent.h"
 #include "TriggerBoxComponent.generated.h"
 
-class IMoverInterface;
+//class IMoverInterface;
 
 /**
  * 

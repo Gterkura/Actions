@@ -29,12 +29,17 @@ void UTriggerBoxComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	if (!MoverComponent || DoorTag.IsNone()) // Check if MoverComponent or DoorTag is not valid
+	{
+		return; // Exit early if these are not properly initialized
+	}
+
 		TArray < AActor* >OverlappingActors;
 
 		GetOverlappingActors(OverlappingActors);
 
 		for (AActor* Actor : OverlappingActors) {
-			if (Actor->ActorHasTag(DoorTag) && !Actor->ActorHasTag("Held"))
+			if (Actor && Actor->ActorHasTag(DoorTag) && !Actor->ActorHasTag("Held"))
 			{
 				UPrimitiveComponent* ActorRoot = Cast<UPrimitiveComponent>(Actor->GetRootComponent());
 				if (ActorRoot) {
